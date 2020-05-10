@@ -1,0 +1,13 @@
+{
+  "name": "action-slack-notify",
+  "version": "1.0.0",
+  "dependencies": {
+    "@actions/core": "^1.2.4",
+    "@actions/github": "^2.2.0",
+    "node-fetch": "^2.6.0"
+  },
+  "devDependencies": {
+    "@types/node-fetch": "^2.5.7",
+    "prettier": "^2.0.5"
+  }
+}

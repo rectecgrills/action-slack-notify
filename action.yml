@@ -1,9 +1,18 @@
 name: 'Slack Notify'
 description: 'This action will send a notification to Slack'
-author: 'rtCamp'
 runs:
-  using: 'docker'
-  image: 'docker://docker.pkg.github.com/rectecgrills/action-slack-notify/action-slack-notify:master'
+  using: 'node12'
+  main: 'index.js'
+inputs:
+  webhook:
+    required: true
+    description: 'Slack Webhook URL'
+  title:
+    required: true
+    description: 'A title for the notification'
+  description:
+    required: true
+    description: 'A description for the notification'
 branding:
   icon: 'bell'
   color: 'yellow'
