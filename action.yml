@@ -1,4 +1,4 @@
-name: 'Slack Notify'
+name: 'Notify via Slack'
 description: 'This action will send a notification to Slack'
 runs:
   using: 'node12'
