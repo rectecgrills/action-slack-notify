@@ -13,4 +13,4 @@ jobs:
         run: |
           echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u rectecgrills --password-stdin
           docker build . --file Dockerfile --tag docker.pkg.github.com/rectecgrills/action-slack-notify/action-slack-notify:master
-          docker push docker.pkg.github.com/rectecgrills/actions-slack-notify/action-slack-notify:master
+          docker push docker.pkg.github.com/rectecgrills/action-slack-notify/action-slack-notify:master
