@@ -13,22 +13,27 @@ async function main() {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      author_name: github.context.actor,
-      author_link: "http://github.com/" + github.context.actor,
-      author_icon: "http://github.com/" + github.context.actor + ".png?size=32",
-      fields: [
+      attachments: [
         {
-          title: core.getInput("title"),
-          value: core.getInput("description"),
-          short: false,
-        },
-        {
-          title: "Message",
-          value: `<${commitLink}|${escapeForMrkdownLink(commitMessage)}>`,
-          short: false,
+          author_name: github.context.actor,
+          author_link: "http://github.com/" + github.context.actor,
+          author_icon:
+            "http://github.com/" + github.context.actor + ".png?size=32",
+          fields: [
+            {
+              title: core.getInput("title"),
+              value: core.getInput("description"),
+              short: false,
+            },
+            {
+              title: "Message",
+              value: `<${commitLink}|${escapeForMrkdownLink(commitMessage)}>`,
+              short: false,
+            },
+          ],
+          mrkdown_in: ["value"],
         },
       ],
-      mrkdown_in: ["value"],
     }),
   });
 }
