@@ -4,6 +4,8 @@ const core = require("@actions/core");
 const github = require("@actions/github");
 
 async function main() {
+  console.log(github.context.payload);
+
   let commitLinkPrefix = `https://github.com/${github.context.repo.owner}/${github.context.repo.repo}/commit/`;
   let formattedCommitMessages = github.context.payload.commits
     .map((commit) => {
