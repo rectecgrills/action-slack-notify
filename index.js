@@ -4,8 +4,20 @@ const core = require("@actions/core");
 const github = require("@actions/github");
 
 async function main() {
-  let commitLink = `https://github.com/${github.context.repo.owner}/${github.context.repo.repo}/commit/${github.context.sha}`;
-  let commitMessage = github.context.payload.commits[0].message;
+  let commitLinkPrefix = `https://github.com/${github.context.repo.owner}/${github.context.repo.repo}/commit/`;
+  let formattedCommitMessages = github.context.payload.commits
+    .map((commit) => {
+      let firstLine = commit.message.split("\n", 1)[0];
+      let otherLines = commit.message.substr(firstLine.length + 1).trim();
+      return (
+        `<${commitLinkPrefix}${commit.sha}|${escapeMrkdwn(firstLine)}>` +
+        (otherLines ? "```" + otherLines + "```" : "")
+      );
+    })
+    .join("\n\n");
+  let summarizedCommitMessages = github.context.payload.commits
+    .map((commit) => commit.message.split("\n", 1)[0])
+    .join("\n");
 
   await fetch(core.getInput("webhook"), {
     method: "POST",
@@ -15,6 +27,7 @@ async function main() {
     body: JSON.stringify({
       attachments: [
         {
+          fallback: `${core.getInput("title")}:\n${summarizedCommitMessages}`,
           author_name: github.context.actor,
           author_link: "http://github.com/" + github.context.actor,
           author_icon:
@@ -26,8 +39,8 @@ async function main() {
               short: false,
             },
             {
-              title: "Message",
-              value: `<${commitLink}|${escapeForMrkdownLink(commitMessage)}>`,
+              title: "Commits",
+              value: formattedCommitMessages,
               short: false,
             },
           ],
@@ -42,6 +55,6 @@ main().catch((error) => {
   core.setFailed(error.message);
 });
 
-function escapeForMrkdownLink(str) {
-  return str.replace("<", "&lt;").replace(">", "&gt;");
+function escapeMrkdwn(str) {
+  return str.replace("<", "&lt;").replace(">", "&gt;").replace("&", "&amp;");
 }
